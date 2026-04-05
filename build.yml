@@ -1,0 +1,30 @@
+name: Build Windows Exe
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          
+      - name: Install dependencies
+        run: |
+          pip install pygame pyinstaller
+          
+      - name: Build exe
+        run: |
+          pyinstaller --onefile --windowed --name "中国象棋" chinese_chess.py
+          
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ChineseChess-exe
+          path: dist/中国象棋.exe
